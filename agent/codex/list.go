@@ -83,7 +83,9 @@ func listCodexSessions(workDir, codexHome string) ([]core.AgentSessionInfo, erro
 				}
 				info.Summary = title
 			}
-			patchSessionSource(info.ID, codexHome)
+			if absWorkDir != "" {
+				patchSessionSource(info.ID, codexHome)
+			}
 			// Codex can split one logical session across multiple rollout files.
 			// Use the latest segment for time while keeping the earliest prompt as
 			// the stable fallback title.
@@ -261,6 +263,7 @@ func parseCodexSessionFile(path, filterCwd string) *core.AgentSessionInfo {
 		Summary:      summary,
 		MessageCount: msgCount,
 		ModifiedAt:   stat.ModTime(),
+		WorkDir:      sessionCwd,
 	}
 }
 
